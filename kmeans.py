@@ -1,9 +1,9 @@
 import math
 
-
+# no input from file 
 ε = 0.001
 k = 2
-iter = 10
+iter = 400
 path = "tests/input_0EasyTest.txt"
 #path = "tests/input_1.txt"
 #with open()
@@ -12,6 +12,13 @@ with open(path, 'r') as file:
 
 def split_by_comma(input_string):
     return input_string.split(',')
+
+def validate_clusters(K: int, N: int) -> None:
+    if K <= 1 or K >= N:
+        raise ValueError("Incorrect number of clusters!")
+def validate_iter(iter) -> None:
+    if iter <= 1 or iter >= 1000:
+        raise ValueError("Incorrect maximun iteration!")
 
 
 
@@ -45,6 +52,8 @@ def find_closest_cluster(x,clusters_array):
 
 #Assign every xi to the closest cluster - step 2
 def assign_clusters(cluster_arr):
+    #N = len(x_array)
+    #validate_clusters(k, N)
     for i in range(len(cluster_arr)):
         for j in range(len(cluster_arr[i][1])):
             curr_x = cluster_arr[i][1][j]
@@ -98,10 +107,19 @@ def check_convergence(convergence_array):
 #step 1
 #init x arrays
 x_array = [None]*len(data_points_x)
+
+validate_iter(iter)
+
+N = len(x_array)
+validate_clusters(k, N)
+
 for i in range(len(x_array)):
     x_array[i] = split_by_comma(data_points_x[i])
+
 #init cluster array: each cluster - [center(xi), the x's that are contained in cluster[x1,x4,....,xn] 
 clusters_array = [None]*k
+
+
 for i in range(k):
     clusters_array[i] = [x_array[i],[[0]*len(x_array[0])]] #["x1","x2"]]
 # ",clusters_array)
